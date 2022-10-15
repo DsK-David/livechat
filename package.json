@@ -1,0 +1,18 @@
+{
+  "name": "realchat",
+  "version": "1.0.0",
+  "description": "Um chat privado que não guarda mensagens em qualquer banco de dados",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "ajs": "^1.3.3",
+    "express": "^4.18.1",
+    "socket.io": "^4.5.0"
+  }
+}

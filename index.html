@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="style.css">
+    <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dev-chat</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js" integrity="sha512-n/4gHW3atM3QqRcbCn6ewmpxcLAHGaDjpEBu4xZd47N0W2oQ+6q7oc3PXstrJYXcbNU1OHdQ1T7pAP+gi5Yu8g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.0/socket.io.js" integrity="sha512-/xb5+PNOA079FJkngKI2jvID5lyiqdHXaUUcfmzE0X0BdpkgzIWHC59LOG90a2jDcOyRsd1luOr24UCCAG8NNw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+</head>
+<body>
+    <!--form inicial-->
+    <form id="chat" class="container">
+        <input type="text" name="username" class="username" placeholder="Seu nome">
+        <div class="messages" id="messages">
+            <ul>
+
+            </ul>
+
+        </div>
+        <input type="text" name="message" class="sms"  placeholder="sua mensagem">
+        <button class="btn"><i class='bx bxs-send'></i></button>
+    </form>
+    <!--script inicial-->
+    <script type="text/javascript">
+
+        var socket = io("http://localhost:3000");
+        function renderMessage(message){
+    $(".messages").append('<li class="message"><strong>'+message.author +'</strong>:'+ message.message+'</li>');
+    var scroll=document.getElementById("messages");
+scroll.scrollTop=scroll.scrollHeight;
+}
+socket.on('previousMessages',function(messages){
+    for(message of messages){
+        renderMessage(message);
+    }
+
+});
+socket.on("receivedMessage",function(message){
+    renderMessage(message);
+
+});
+
+        $('#chat').submit(function(event){
+            event.preventDefault()
+
+            var author = $('input[name=username]').val();
+            var message = $('input[name=message]').val();
+
+            if(author.length && message.length){
+                var messageObject = {
+                    author:author,
+                    message:message,
+                };
+                renderMessage(messageObject);
+                socket.emit("sendMessage" , messageObject);
+
+            }
+            
+
+        });
+   
+    </script>
+</body>
+</html>
