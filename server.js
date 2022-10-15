@@ -16,7 +16,7 @@ const io = require("socket.io")(server);
 
 app.use("/", (req,res) => {
 
-    res.render("index.html");
+    res.sendFile(__dirname + "/index.html");
 }); 
 // conect to server 
 let messages = [];
